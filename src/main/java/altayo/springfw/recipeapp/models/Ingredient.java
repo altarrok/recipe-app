@@ -1,4 +1,4 @@
-package altayo.springfw.recipeapp.model;
+package altayo.springfw.recipeapp.models;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
