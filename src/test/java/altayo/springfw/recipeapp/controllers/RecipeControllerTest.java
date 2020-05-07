@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,7 +35,7 @@ class RecipeControllerTest {
 
         mockMvc.perform(get("/recipe/1"))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("recipe", is(recipe)))
+                .andExpect(model().attribute("recipe", recipe))
                 .andExpect(view().name("recipe/show"));
     }
 }
