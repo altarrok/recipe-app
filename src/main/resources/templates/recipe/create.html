@@ -17,12 +17,12 @@
 </head>
 <body>
 <div class="container-fluid" style="margin-top: 20px">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-6 col-md-offset-3">
-            <!--/*@thymesVar id="recipe" type="altayo.springfw.recipeapp.models.Recipe"*/-->
-            <form th:object="${recipe}" th:action="@{/recipe/}" method="post">
+            <!--/*@thymesVar id="recipeecipe" type="altayo.springfw.recipeapp.models.Recipe"*/-->
+            <form th:object="${recipe}" th:action="@{/recipe/store}" method="post">
                 <input type="hidden" th:field="*{id}"/>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <h1 class="card-title">Edit Recipe Information</h1>
                     </div>
@@ -86,14 +86,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-11 ">
                                 <h1 class="card-title">Ingredients</h1>
                             </div>
                             <div class="col-md-1">
-                                <a class="btn btn-default" href="#" role="button">Edit</a>
+                                <a class="btn btn-outline-dark" href="#" role="button">Edit</a>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                     <li th:remove="all">1 Teaspoon of chocolate</li>
                                     <li th:each="ingredient : ${recipe.ingredients}"
                                         th:text="${(ingredient.getAmount() +
-                                        ' ' + ingredient.uom.getDescription() +
+                                        ' ' + ingredient.unitOfMeasure.getDescription() +
                                         ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
                                     </li>
                                 </ul>
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <h1 class="card-title">Directions</h1>
                     </div>
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-header">
                         <h1 class="card-title">Notes</h1>
                     </div>
@@ -136,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-success mb-5">Submit</button>
             </form>
         </div>
     </div>
