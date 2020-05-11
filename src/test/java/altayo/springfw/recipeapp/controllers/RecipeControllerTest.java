@@ -2,6 +2,7 @@ package altayo.springfw.recipeapp.controllers;
 
 import altayo.springfw.recipeapp.models.Recipe;
 import altayo.springfw.recipeapp.services.RecipeService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,12 +25,17 @@ class RecipeControllerTest {
     @InjectMocks
     RecipeController recipeController;
 
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+    }
+
     @Test
     void showRecipe() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
-
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 
         when(recipeService.findById(anyLong())).thenReturn(recipe);
 
@@ -38,5 +44,13 @@ class RecipeControllerTest {
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(model().attribute("recipe", recipe))
                 .andExpect(view().name("recipe/show"));
+    }
+
+    @Test
+    void createRecipe() throws Exception {
+        mockMvc.perform(get("/recipe/create"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/create"))
+                .andExpect(model().attributeExists("recipe"));
     }
 }
