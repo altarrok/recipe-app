@@ -22,7 +22,8 @@
             <div class="card mb-5">
                 <div class="card-header">
                     <!--/*@thymesVar id="recipe" type="altayo.springfw.recipeapp.models.Recipe"*/-->
-                    <h1 class="card-title" th:text="${recipe.description}">Recipe Description Here!</h1>
+                    <h1 class="card-title" th:text="${recipe.description}"></h1>
+                    <a th:href="${'/recipe/' + recipe.id + '/edit'}" class="btn btn-outline-dark" role="button">Edit</a>
                 </div>
                 <div class="card-body">
                     <div class="row">
