@@ -15,9 +15,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,7 +69,7 @@ class RecipeControllerTest {
                 .param("id", "")
                 .param("description", "Something"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/recipe/2"));
+                .andExpect(view().name("redirect:2"));
     }
 
     @Test
@@ -83,6 +82,15 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipe/3/edit"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
-                .andExpect(view().name("recipe/edit"));
+                .andExpect(view().name("recipe/create"));
+    }
+
+    @Test
+    void deleteRecipe() throws Exception {
+        mockMvc.perform(delete("/recipe/3/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        verify(recipeService, times(1)).deleteById(anyLong());
     }
 }
