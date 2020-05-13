@@ -29,6 +29,12 @@ public class RecipeController {
         return "recipe/create";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editRecipe(@PathVariable String id, Model model) {
+        model.addAttribute("recipe", recipeService.findCommandById(new Long(id)));
+        return "recipe/create"; // Redundant to add a separate edit view.
+    }
+
     @PostMapping("/store")
     public String storeRecipe(@ModelAttribute RecipeCommand recipeCommand) {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
