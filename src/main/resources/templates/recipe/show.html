@@ -23,18 +23,25 @@
                 <div class="card-header">
                     <!--/*@thymesVar id="recipe" type="altayo.springfw.recipeapp.models.Recipe"*/-->
                     <h1 class="card-title" th:text="${recipe.description}"></h1>
-                    <a th:href="${'/recipe/' + recipe.id + '/edit'}" class="btn btn-outline-dark" role="button">Edit</a>
+                    <div>
+                        <a th:href="@{'/recipe/' + ${recipe.id} + '/edit'}" class="btn btn-outline-dark" role="button">Edit</a>
+                        <a th:href="@{'/recipe/' + ${recipe.id} + '/edit/image'}" class="btn btn-outline-dark" role="button">Edit Image</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
                             <h5>Categories:</h5>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-3">
                             <ul>
                                 <li th:each="category : ${recipe.getCategories()}"
                                     th:text="${category.getDescription()}"></li>
                             </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <img th:if="${recipe.image != null}" th:src="@{'/recipe/' + ${recipe.id} + '/recipeImage'}" class="img-fluid">
+                            <img th:if="${recipe.image == null}" th:src="@{'/images/placeholder.png'}">
                         </div>
                     </div>
                     <div class="row">

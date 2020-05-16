@@ -7,8 +7,10 @@ import altayo.springfw.recipeapp.models.Recipe;
 import altayo.springfw.recipeapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -67,5 +69,29 @@ public class RecipeServiceImpl implements RecipeService {
     public void deleteById(Long aLong) {
         recipeRepository.deleteById(aLong);
         log.debug("Deleting Recipe by Id: " + aLong);
+    }
+
+    @Override
+    @Transactional
+    public void saveImageFile(Long id, MultipartFile file) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        try {
+            Byte[] byteObject = new Byte[file.getBytes().length];
+
+            int i = 0;
+
+            for (byte b : file.getBytes()) {
+                byteObject[i++] = b;
+            }
+
+            recipe.setImage(byteObject);
+
+            recipeRepository.save(recipe);
+        } catch (IOException e) {
+            log.error("Error occured");
+            e.printStackTrace();
+        }
+
     }
 }
