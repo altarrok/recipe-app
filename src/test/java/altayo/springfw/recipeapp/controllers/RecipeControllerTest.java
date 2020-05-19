@@ -68,7 +68,9 @@ class RecipeControllerTest {
         mockMvc.perform(post("/recipe/store")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .param("id", "")
-                .param("description", "Something"))
+                .param("description", "Something")
+                .param("url", "http://www.google.com/")
+                .param("directions", "nothing"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:2"));
     }

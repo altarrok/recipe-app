@@ -1,15 +1,20 @@
 package altayo.springfw.recipeapp.controllers;
 
 import altayo.springfw.recipeapp.commands.RecipeCommand;
+import altayo.springfw.recipeapp.exceptions.NotFoundException;
 import altayo.springfw.recipeapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +48,14 @@ public class RecipeController {
     }
 
     @PostMapping("/store")
-    public String storeRecipe(@ModelAttribute RecipeCommand recipeCommand) {
+    public String storeRecipe(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> {
+                log.error("Validation Error: " + objectError);
+            });
+            return "recipe/create";
+        }
+
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(recipeCommand);
 
         return "redirect:" + savedCommand.getId();
@@ -85,5 +97,15 @@ public class RecipeController {
             InputStream is = new ByteArrayInputStream(byteArray);
             IOUtils.copy(is, response.getOutputStream());
         }
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handlerNotFound(Exception exception) {
+        log.error("Handling -> Not Found Exception: " + exception.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404error");
+        modelAndView.addObject("exception", exception.getMessage());
+        return modelAndView;
     }
 }

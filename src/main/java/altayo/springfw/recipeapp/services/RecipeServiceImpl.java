@@ -3,6 +3,7 @@ package altayo.springfw.recipeapp.services;
 import altayo.springfw.recipeapp.commands.RecipeCommand;
 import altayo.springfw.recipeapp.converters.RecipeCommandToRecipe;
 import altayo.springfw.recipeapp.converters.RecipeToRecipeCommand;
+import altayo.springfw.recipeapp.exceptions.NotFoundException;
 import altayo.springfw.recipeapp.models.Recipe;
 import altayo.springfw.recipeapp.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
 
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found");
+            throw new NotFoundException("Recipe with ID: " + id + " Not Found" );
         }
 
         return recipeOptional.get();
